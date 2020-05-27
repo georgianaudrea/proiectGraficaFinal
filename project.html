@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>three.js - Grafică Computerizată</title>
+	<style type="text/css">
+		html, body {
+			margin: 0px;
+			padding: 0px;
+			border: none;
+			overflow: hidden;
+		}
+	</style>
+</head>
+
+<body>
+	<script type="text/javascript" src="./build/three.js"></script>
+	<script type="text/javascript" src="./examples/js/controls/OrbitControls.js"></script>
+	<script type="text/javascript" src="./dat.gui.js"></script>
+	<script type="text/javascript" src="./image/minge.jpg"></script>
+	<script type="text/javascript" src="./image/teren.jpg"></script>
+	<script type="text/javascript" src="./image/whiteBall.png"></script>
+	<script type="text/javascript" src="./examples/js/loaders/LoaderSupport.js"></script>
+	<script type="module">
+		import * as THREE from './build/three.module.js';
+		import * as OBJLoader from './examples/js/loaders/OBJLoader.js';
+		import * as OBJLoader2 from './examples/js/loaders/OBJLoader2.js';
+		import * as LoaderSupport from './examples/js/loaders/LoaderSupport.js';
+		import * as MTLLoader from './examples/js/loaders/MTLLoader.js';
+		//import * as GLTFLoader from './examples/js/loaders/GLTFLoader'
+	</script>
+
+	<script type="module">
+
+		const W = window.innerWidth, H = window.innerHeight;
+
+		const renderer = new THREE.WebGLRenderer({ antialias: true });
+		renderer.setSize(W, H);
+		document.body.append(renderer.domElement);
+
+		const scene = new THREE.Scene();
+
+		const camera = new THREE.PerspectiveCamera(45, W / H, 0.01, 1000);
+		camera.position.set(20, 20, 20);
+		camera.lookAt(scene.position);
+
+		const axesHelper = new THREE.AxesHelper(100);
+		//scene.add(axesHelper);
+		const gridHelper = new THREE.GridHelper(100, 10);
+		//scene.add(gridHelper);
+
+		const controls = new THREE.OrbitControls(camera, renderer.domElement);
+		controls.enableKeys = false;
+
+		var texture = new THREE.TextureLoader().load('image/minge.jpg');
+
+		var geometry = new THREE.SphereGeometry(0, 0, 5);
+		var material = new THREE.MeshBasicMaterial({ map: texture });
+		var planeBall = new THREE.Mesh(geometry, material);
+		planeBall.position.y = 1;
+		planeBall.matrixAutoUpdate = true;
+
+
+		scene.add(planeBall);
+
+		var texture2 = new THREE.TextureLoader().load('image/teren.jpg');
+
+
+		var geometry2 = new THREE.PlaneGeometry(100, 100, 32);
+		//var material2 = new THREE.MeshBasicMaterial({ color: 0x00ff00, side: THREE.DoubleSide });
+		var material2 = new THREE.MeshBasicMaterial({ map: texture2 })
+		var planeTeren = new THREE.Mesh(geometry2, material2);
+		//planeTeren.position.y = 5;
+		//planeTeren.position.x = 10;
+		planeTeren.rotation.x = THREE.Math.degToRad(-90);
+		planeTeren.rotation.z = THREE.Math.degToRad(-90);
+		scene.add(planeTeren);
+
+		var geometry3 = new THREE.BoxGeometry(1, 10, 100);
+		var material3 = new THREE.MeshBasicMaterial({ color: 0xA9A9A9, side: THREE.DoubleSide });
+		var planeMargin1 = new THREE.Mesh(geometry3, material3);
+		planeMargin1.position.x = 50;
+		planeMargin1.position.y = 5;
+		scene.add(planeMargin1);
+
+
+		var geometry4 = new THREE.BoxGeometry(1, 10, 100);
+		var material4 = new THREE.MeshBasicMaterial({ color: 0xA9A9A9, side: THREE.DoubleSide });
+		var planeMargin2 = new THREE.Mesh(geometry4, material4);
+		planeMargin2.position.x = -50;
+		planeMargin2.position.y = 5;
+		scene.add(planeMargin2);
+
+
+		var geometry5 = new THREE.BoxGeometry(100, 10, 1);
+		var material5 = new THREE.MeshBasicMaterial({ color: 0xA9A9A9, side: THREE.DoubleSide });
+		var planeMargin3 = new THREE.Mesh(geometry5, material5);
+		planeMargin3.position.z = 50;
+		planeMargin3.position.y = 5;
+		scene.add(planeMargin3);
+
+
+		var geometry6 = new THREE.BoxGeometry(100, 10, 1);
+		var material6 = new THREE.MeshBasicMaterial({ color: 0xA9A9A9, side: THREE.DoubleSide });
+		var planeMargin4 = new THREE.Mesh(geometry6, material6);
+		planeMargin4.position.z = -50;
+		planeMargin4.position.y = 5;
+		scene.add(planeMargin4);
+
+
+
+		ObjectImportPoarta("image/football.mtl", "image/football.obj", scene, 2.5, 0, 0, -20, 0, 0, 0);
+		ObjectImportPoarta("image/football.mtl", "image/football.obj", scene, 2.5, 0, 0, 21, 0, 3.15, 0);
+		ObjectImportFotbal("objectPlayer/football-player.mtl", "objectPlayer/football-player.obj", scene, 4, 3, 0, 0, -10, 0, 0, 0);
+		ObjectImportFotbal("objectPlayer/football-player.mtl", "objectPlayer/football-player.obj", scene, 4, 3, 0, 0, 10, 0, 3.15, 0);
+
+		function ObjectImportPoarta(mtl, obj, scene, scale, pozX, pozY, pozZ, rotX, rotY, rotZ) {
+
+			const objLoader = new THREE.OBJLoader2();
+			objLoader.crossOrigin = '';
+			objLoader.loadMtl(mtl, null, (objects) => {
+				objLoader.setMaterials(objects);
+				objLoader.load(
+					obj,
+					function (event) {
+						const object = event.detail.loaderRootNode;
+						object.position.x = pozX;
+						object.position.y = pozY;
+						object.position.z = pozZ;
+						object.scale.y = scale;
+						object.scale.x = scale;
+
+						object.rotation.x = rotX;
+						object.rotation.y = rotY;
+						object.rotation.z = rotZ;
+						object.castShadow = true;
+						object.receiveShadow = true;
+						scene.add(object);
+					}
+				);
+			});
+
+
+			var starsGeometry = new THREE.Geometry();
+
+			for (var i = 0; i < 10000; i++) {
+
+				var star = new THREE.Vector3();
+				star.x = THREE.Math.randFloatSpread(2000);
+				star.y = THREE.Math.randFloatSpread(2000);
+				star.z = THREE.Math.randFloatSpread(2000);
+
+				starsGeometry.vertices.push(star);
+
+			}
+
+			var starsMaterial = new THREE.PointsMaterial({ color: 0x888888 });
+
+			var starField = new THREE.Points(starsGeometry, starsMaterial);
+
+			scene.add(starField);
+
+			var sphere = new THREE.SphereBufferGeometry(0.1, 0.1, 0.1);
+
+
+			var light = new THREE.PointLight(0x00ff00, 1, 50);
+			light.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0xB22222 })));
+			light.position.y = 5;
+			scene.add(light);
+			var light1 = new THREE.PointLight(0xDC143C, 1, 100);
+			light1.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0x9400D3 })));
+			light1.position.y = 10;
+			scene.add(light1);
+			var light2 = new THREE.PointLight(0x00ff00, 1, 50);
+			light2.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0xB22222 })));
+			light2.position.x = 5;
+			light2.position.y = 5;
+			scene.add(light2);
+			var light3 = new THREE.PointLight(0x00ff00, 1, 50);
+			light3.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0xFFD700 })));
+			light3.position.x = -5;
+			light3.position.y = 5;
+			scene.add(light3);
+			var light4 = new THREE.PointLight(0x00ff00, 1, 50);
+			light4.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0xB22222 })));
+			light4.position.y = 5;
+			light4.position.z = 20;
+			scene.add(light4);
+			var light5 = new THREE.PointLight(0x00ff00, 1, 50);
+			light5.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0xB22222 })));
+			light5.position.y = 5;
+			light5.position.z = -20;
+			scene.add(light5);
+
+		}
+
+		function ObjectImportFotbal(mtl, obj, scene, scale, scaleZ, pozX, pozY, pozZ, rotX, rotY, rotZ) {
+
+			const objLoader = new THREE.OBJLoader2();
+			objLoader.crossOrigin = '';
+			objLoader.loadMtl(mtl, null, (objects) => {
+				objLoader.setMaterials(objects);
+				objLoader.load(
+					obj,
+					function (event) {
+						const object = event.detail.loaderRootNode;
+						object.position.x = pozX;
+						object.position.y = pozY;
+						object.position.z = pozZ;
+						object.scale.y = scale;
+						object.scale.x = scale;
+						object.scale.z = scaleZ;
+						object.rotation.x = rotX;
+						object.rotation.y = rotY;
+						object.rotation.z = rotZ;
+						object.castShadow = true;
+						object.receiveShadow = true;
+						scene.add(object);
+					}
+				);
+			});
+		}
+
+		const textureLoader = new THREE.TextureLoader();
+		const materialPoints = new THREE.PointsMaterial({
+			color: "#87CED1",
+			size: 1.3,
+			map: textureLoader.load("./image/whiteBall.png"),
+			transparent: true,
+			alphaTest: 0.5,
+			opacity: 0.8
+		});
+		const geometriePoints = new THREE.Geometry();
+		for (let i = 0; i < 10000; i++) {
+			geometriePoints.vertices.push(
+				new THREE.Vector3(Math.random() * 100, Math.random() * 250, Math.random() * 100));
+		}
+
+		const points = new THREE.Points(geometriePoints, materialPoints);
+		points.position.x = -50;
+		points.position.z = -50;
+		scene.add(points);
+
+		setInterval(() => {
+			for (let point of geometriePoints.vertices) {
+				point.x += Math.random() * 0.02 - 0.01;
+				point.y += Math.random() * 0.02 - 0.03;
+				//point.z += Math.random() * 0.02 - 0.005;
+			}
+			geometriePoints.verticesNeedUpdate = true;
+		}, 10);
+
+
+
+
+
+		function desenare() {
+
+			planeBall.rotation.x += 0.005;
+			planeBall.rotation.y += 0.01;
+			renderer.render(scene, camera);
+			requestAnimationFrame(desenare);
+
+		}
+		desenare();
+	</script>
+</body>
+</html>

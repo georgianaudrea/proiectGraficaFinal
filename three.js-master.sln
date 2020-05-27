@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.452
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "three.js-master(1)", ".", "{B8C29179-FD60-4775-98F1-91B07D534455}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.7.2"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_61001"
+		Debug.AspNetCompiler.PhysicalPath = "..\..\..\Desktop\three.js-master\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_61001\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_61001"
+		Release.AspNetCompiler.PhysicalPath = "..\..\..\Desktop\three.js-master\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_61001\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "61001"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B8C29179-FD60-4775-98F1-91B07D534455}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8C29179-FD60-4775-98F1-91B07D534455}.Debug|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {83B0C940-6645-491A-BA5A-FF3D274803D9}
+	EndGlobalSection
+EndGlobal
